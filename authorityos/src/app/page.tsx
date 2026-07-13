@@ -27,15 +27,106 @@ interface QualificationStep {
   placeholder?: string
 }
 
+const COUNTRIES = [
+  // Gulf & Middle East (prioritized)
+  { code: 'QA', name: 'Qatar', dial: '+974' },
+  { code: 'AE', name: 'UAE', dial: '+971' },
+  { code: 'SA', name: 'Saudi Arabia', dial: '+966' },
+  { code: 'KW', name: 'Kuwait', dial: '+965' },
+  { code: 'BH', name: 'Bahrain', dial: '+973' },
+  { code: 'OM', name: 'Oman', dial: '+968' },
+  { code: 'IQ', name: 'Iraq', dial: '+964' },
+  { code: 'JO', name: 'Jordan', dial: '+962' },
+  { code: 'LB', name: 'Lebanon', dial: '+961' },
+  { code: 'SY', name: 'Syria', dial: '+963' },
+  { code: 'PS', name: 'Palestine', dial: '+970' },
+  { code: 'YE', name: 'Yemen', dial: '+967' },
+  { code: 'EG', name: 'Egypt', dial: '+20' },
+  { code: 'IR', name: 'Iran', dial: '+98' },
+  { code: 'TR', name: 'Türkiye', dial: '+90' },
+  { code: 'IL', name: 'Israel', dial: '+972' },
+  // Africa
+  { code: 'ZA', name: 'South Africa', dial: '+27' },
+  { code: 'NG', name: 'Nigeria', dial: '+234' },
+  { code: 'KE', name: 'Kenya', dial: '+254' },
+  { code: 'MA', name: 'Morocco', dial: '+212' },
+  { code: 'ET', name: 'Ethiopia', dial: '+251' },
+  { code: 'GH', name: 'Ghana', dial: '+233' },
+  { code: 'TZ', name: 'Tanzania', dial: '+255' },
+  { code: 'DZ', name: 'Algeria', dial: '+213' },
+  { code: 'TN', name: 'Tunisia', dial: '+216' },
+  { code: 'SD', name: 'Sudan', dial: '+249' },
+  { code: 'LY', name: 'Libya', dial: '+218' },
+  // Asia
+  { code: 'IN', name: 'India', dial: '+91' },
+  { code: 'PK', name: 'Pakistan', dial: '+92' },
+  { code: 'BD', name: 'Bangladesh', dial: '+880' },
+  { code: 'CN', name: 'China', dial: '+86' },
+  { code: 'JP', name: 'Japan', dial: '+81' },
+  { code: 'KR', name: 'South Korea', dial: '+82' },
+  { code: 'PH', name: 'Philippines', dial: '+63' },
+  { code: 'MY', name: 'Malaysia', dial: '+60' },
+  { code: 'ID', name: 'Indonesia', dial: '+62' },
+  { code: 'TH', name: 'Thailand', dial: '+66' },
+  { code: 'VN', name: 'Vietnam', dial: '+84' },
+  { code: 'SG', name: 'Singapore', dial: '+65' },
+  { code: 'HK', name: 'Hong Kong', dial: '+852' },
+  { code: 'TW', name: 'Taiwan', dial: '+886' },
+  { code: 'LK', name: 'Sri Lanka', dial: '+94' },
+  { code: 'NP', name: 'Nepal', dial: '+977' },
+  { code: 'AF', name: 'Afghanistan', dial: '+93' },
+  // Europe
+  { code: 'GB', name: 'United Kingdom', dial: '+44' },
+  { code: 'DE', name: 'Germany', dial: '+49' },
+  { code: 'FR', name: 'France', dial: '+33' },
+  { code: 'IT', name: 'Italy', dial: '+39' },
+  { code: 'ES', name: 'Spain', dial: '+34' },
+  { code: 'NL', name: 'Netherlands', dial: '+31' },
+  { code: 'BE', name: 'Belgium', dial: '+32' },
+  { code: 'CH', name: 'Switzerland', dial: '+41' },
+  { code: 'AT', name: 'Austria', dial: '+43' },
+  { code: 'SE', name: 'Sweden', dial: '+46' },
+  { code: 'NO', name: 'Norway', dial: '+47' },
+  { code: 'DK', name: 'Denmark', dial: '+45' },
+  { code: 'FI', name: 'Finland', dial: '+358' },
+  { code: 'PL', name: 'Poland', dial: '+48' },
+  { code: 'PT', name: 'Portugal', dial: '+351' },
+  { code: 'GR', name: 'Greece', dial: '+30' },
+  { code: 'IE', name: 'Ireland', dial: '+353' },
+  { code: 'CZ', name: 'Czech Republic', dial: '+420' },
+  { code: 'RO', name: 'Romania', dial: '+40' },
+  { code: 'HU', name: 'Hungary', dial: '+36' },
+  { code: 'UA', name: 'Ukraine', dial: '+380' },
+  { code: 'RU', name: 'Russia', dial: '+7' },
+  // Americas
+  { code: 'US', name: 'United States', dial: '+1' },
+  { code: 'CA', name: 'Canada', dial: '+1' },
+  { code: 'BR', name: 'Brazil', dial: '+55' },
+  { code: 'MX', name: 'Mexico', dial: '+52' },
+  { code: 'AR', name: 'Argentina', dial: '+54' },
+  { code: 'CO', name: 'Colombia', dial: '+57' },
+  { code: 'CL', name: 'Chile', dial: '+56' },
+  { code: 'PE', name: 'Peru', dial: '+51' },
+  { code: 'VE', name: 'Venezuela', dial: '+58' },
+  { code: 'EC', name: 'Ecuador', dial: '+593' },
+  { code: 'UY', name: 'Uruguay', dial: '+598' },
+  { code: 'PA', name: 'Panama', dial: '+507' },
+  { code: 'CR', name: 'Costa Rica', dial: '+506' },
+  { code: 'DO', name: 'Dominican Republic', dial: '+1' },
+  // Oceania
+  { code: 'AU', name: 'Australia', dial: '+61' },
+  { code: 'NZ', name: 'New Zealand', dial: '+64' },
+]
+
 const QUALIFICATION_STEPS: QualificationStep[] = [
   {
-    id: 'name-email',
+    id: 'name-phone',
     type: 'combined',
     label: 'Let\'s start with your details',
     sublabel: 'Required',
     fields: [
       { id: 'fullName', label: 'Full Name', placeholder: 'Dr. Jane Smith', type: 'text' },
-      { id: 'email', label: 'Email', placeholder: 'jane@clinic.com', type: 'email' },
+      { id: 'phone', label: 'Phone Number', placeholder: '5555 1234', type: 'tel' },
     ],
   },
   {
@@ -68,7 +159,7 @@ const QUALIFICATION_STEPS: QualificationStep[] = [
     ],
   },
   {
-    id: 'why-now',
+    id: 'whyNow',
     type: 'short',
     label: 'Why are you looking to grow your online presence right now?',
     sublabel: 'Short answer',
@@ -89,11 +180,12 @@ const QUALIFICATION_STEPS: QualificationStep[] = [
 const WHATSAPP_NUMBER = '+97477261379'
 
 function buildWhatsAppMessage(data: Record<string, string>): string {
+  const phone = data.countryCode && data.phone ? `${data.countryCode} ${data.phone}` : data.phone || ''
   const lines = [
     '📋 *Strategy Call Application*',
     '',
     `*Full Name:* ${data.fullName || ''}`,
-    `*Email:* ${data.email || ''}`,
+    `*Phone:* ${phone}`,
     `*Specialty:* ${data.specialty || ''}`,
     `*Practice Stage:* ${data.practice || ''}`,
     `*Social Media:* ${data.social || ''}`,
@@ -107,6 +199,10 @@ export default function Home() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [qualData, setQualData] = useState<Record<string, string>>({})
+  const [countryCode, setCountryCode] = useState('+974')
+  const [countrySearch, setCountrySearch] = useState('')
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false)
+  const countryDropdownRef = useRef<HTMLDivElement>(null)
   const [submitted, setSubmitted] = useState(false)
   const [floatingVisible, setFloatingVisible] = useState(true)
   const lastScrollY = useRef(0)
@@ -131,6 +227,22 @@ export default function Home() {
 
   const answeredCount = getAnsweredCount()
   const remainingCount = totalSteps - answeredCount
+
+  // Close country dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(e.target as Node)) {
+        setCountryDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const filteredCountries = COUNTRIES.filter((c) => {
+    const q = countrySearch.toLowerCase()
+    return c.name.toLowerCase().includes(q) || c.dial.includes(q) || c.code.toLowerCase().includes(q)
+  })
 
   // Floating button scroll behavior — use CSS transition driven by a single state
   useEffect(() => {
@@ -188,7 +300,7 @@ export default function Home() {
       setCurrentStep(currentStep + 1)
     } else {
       // Submit — open WhatsApp
-      const message = buildWhatsAppMessage(qualData)
+      const message = buildWhatsAppMessage({ ...qualData, countryCode })
       const url = `https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encodeURIComponent(message)}`
       window.open(url, '_blank')
       setSubmitted(true)
@@ -495,25 +607,88 @@ export default function Home() {
               <p className="text-xs text-slate-300 mb-3">{currentStepData.sublabel}</p>
             )}
 
-            {/* Combined fields (name + email) */}
+            {/* Combined fields (name + phone) */}
             {currentStepData.type === 'combined' && currentStepData.fields && (
               <div className="flex flex-col gap-3">
                 {currentStepData.fields.map((field) => (
                   <div key={field.id}>
                     <label className="block text-xs font-medium text-slate-500 mb-1">{field.label}</label>
-                    <Input
-                      type={field.type}
-                      placeholder={field.placeholder}
-                      value={qualData[field.id] || ''}
-                      onChange={(e) => setQualData({ ...qualData, [field.id]: e.target.value })}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          handleNext()
-                        }
-                      }}
-                      className="h-11 sm:h-12 border-slate-200 focus:border-blue-400 focus:ring-blue-100 rounded-xl text-sm sm:text-base"
-                    />
+                    {field.type === 'tel' ? (
+                      <div className="flex gap-2">
+                        <div ref={countryDropdownRef} className="relative">
+                          <button
+                            type="button"
+                            onClick={() => { setCountryDropdownOpen(!countryDropdownOpen); setCountrySearch('') }}
+                            className="h-11 sm:h-12 min-w-[110px] sm:min-w-[130px] border border-slate-200 rounded-xl px-2 sm:px-3 text-sm sm:text-base bg-white hover:border-slate-300 focus:border-blue-400 focus:ring-blue-100 focus:outline-none flex items-center justify-between gap-1 transition-colors"
+                          >
+                            <span className="truncate">{countryCode}</span>
+                            <svg className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${countryDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                          </button>
+                          {countryDropdownOpen && (
+                            <div className="absolute z-50 top-full mt-1 left-0 w-[240px] sm:w-[280px] bg-white border border-slate-200 rounded-xl shadow-lg shadow-slate-200/50 overflow-hidden">
+                              <div className="p-2 border-b border-slate-100">
+                                <Input
+                                  type="text"
+                                  placeholder="Search country..."
+                                  value={countrySearch}
+                                  onChange={(e) => setCountrySearch(e.target.value)}
+                                  className="h-9 border-slate-200 focus:border-blue-400 focus:ring-blue-100 rounded-lg text-sm"
+                                  autoFocus
+                                />
+                              </div>
+                              <div className="max-h-[200px] overflow-y-auto">
+                                {filteredCountries.length === 0 ? (
+                                  <p className="text-xs text-slate-400 px-3 py-3">No countries found</p>
+                                ) : (
+                                  filteredCountries.map((c) => (
+                                    <button
+                                      key={c.code + c.dial}
+                                      type="button"
+                                      onClick={() => {
+                                        setCountryCode(c.dial)
+                                        setCountryDropdownOpen(false)
+                                        setCountrySearch('')
+                                      }}
+                                      className={`w-full text-left px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors flex items-center justify-between gap-2 ${countryCode === c.dial ? 'bg-blue-50 text-blue-700 font-medium' : 'text-slate-600'}`}
+                                    >
+                                      <span className="truncate">{c.name}</span>
+                                      <span className="text-slate-400 text-xs shrink-0">{c.dial}</span>
+                                    </button>
+                                  ))
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <Input
+                          type="tel"
+                          placeholder={field.placeholder}
+                          value={qualData[field.id] || ''}
+                          onChange={(e) => setQualData({ ...qualData, [field.id]: e.target.value })}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault()
+                              handleNext()
+                            }
+                          }}
+                          className="h-11 sm:h-12 border-slate-200 focus:border-blue-400 focus:ring-blue-100 rounded-xl text-sm sm:text-base flex-1"
+                        />
+                      </div>
+                    ) : (
+                      <Input
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        value={qualData[field.id] || ''}
+                        onChange={(e) => setQualData({ ...qualData, [field.id]: e.target.value })}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            handleNext()
+                          }
+                        }}
+                        className="h-11 sm:h-12 border-slate-200 focus:border-blue-400 focus:ring-blue-100 rounded-xl text-sm sm:text-base"
+                      />
+                    )}
                   </div>
                 ))}
               </div>
