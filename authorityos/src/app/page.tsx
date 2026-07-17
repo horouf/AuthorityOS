@@ -1,127 +1,20 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-
-type StepType = 'short' | 'radio'
-
-interface QualificationStep {
-  id: string
-  type: StepType
-  label: string
-  sublabel?: string
-  options?: { value: string; label: string }[]
-  placeholder?: string
-}
-
-const QUALIFICATION_STEPS: QualificationStep[] = [
-  {
-    id: 'specialty',
-    type: 'short',
-    label: "What's your specialty?",
-    sublabel: 'Short answer',
-    placeholder: 'e.g., Dermatology, Orthopedics, Cardiology',
-  },
-  {
-    id: 'practice',
-    type: 'radio',
-    label: 'Which best describes your practice today?',
-    options: [
-      { value: 'just-started', label: "I'm just getting started." },
-      { value: 'steady-flow', label: 'I have a steady flow of patients.' },
-      { value: 'well-established', label: 'My practice is well established, and I want to grow my reputation.' },
-      { value: 'already-known', label: "I'm already well known, but I want to become the leading doctor in my specialty." },
-    ],
-  },
-  {
-    id: 'social',
-    type: 'radio',
-    label: 'How active are you on social media today?',
-    options: [
-      { value: 'rarely', label: 'I rarely post.' },
-      { value: 'occasionally', label: 'I post occasionally.' },
-      { value: 'consistent-no-growth', label: "I post consistently but I'm not growing." },
-      { value: 'strong-scale', label: 'I have a strong presence and want to scale.' },
-    ],
-  },
-  {
-    id: 'whyNow',
-    type: 'short',
-    label: 'Why are you looking to grow your online presence right now?',
-    sublabel: 'Short answer',
-    placeholder: 'Tell us briefly...',
-  },
-  {
-    id: 'invest',
-    type: 'radio',
-    label: 'This is a premium online reputation service starting at $1,500. Are you ready to invest at this level?',
-    options: [
-      { value: 'yes', label: 'Yes, I am ready to invest.' },
-      { value: 'depends', label: 'I need to learn more before deciding.' },
-      { value: 'no', label: "No, that's not in my budget right now." },
-    ],
-  },
-]
-
-/**
- * Qualification logic:
- * QUALIFY → /book if:
- *   - invest === 'yes'
- *   - OR invest === 'depends' AND practice is well-established or already-known
- *
- * DISQUALIFY → /thank-you if:
- *   - invest === 'no'
- *   - OR invest === 'depends' AND practice is just-started or steady-flow
- *   - OR practice === 'just-started' AND invest !== 'yes'
- */
-function isQualified(data: Record<string, string>): boolean {
-  const invest = data.invest
-  const practice = data.practice
-
-  if (invest === 'yes') return true
-
-  if (invest === 'depends') {
-    return practice === 'well-established' || practice === 'already-known'
-  }
-
-  return false
-}
 
 export default function Home() {
   const router = useRouter()
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [currentStep, setCurrentStep] = useState(0)
-  const [qualData, setQualData] = useState<Record<string, string>>({})
-  const [submitted, setSubmitted] = useState(false)
   const [floatingVisible, setFloatingVisible] = useState(true)
   const lastScrollY = useRef(0)
   const videoRef = useRef<HTMLDivElement>(null)
 
-  const totalSteps = QUALIFICATION_STEPS.length
-  const currentStepData = QUALIFICATION_STEPS[currentStep]
-
-  const getAnsweredCount = useCallback(() => {
-    let count = 0
-    for (const step of QUALIFICATION_STEPS) {
-      if ((qualData[step.id] || '').trim() !== '') count++
-    }
-    return count
-  }, [qualData])
-
-  const answeredCount = getAnsweredCount()
-  const remainingCount = totalSteps - answeredCount
+  const handleApply = () => {
+    router.push('/book')
+  }
 
   useEffect(() => {
     let hideTimer: ReturnType<typeof setTimeout>
@@ -155,44 +48,6 @@ export default function Home() {
     videoRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleOpenDialog = () => {
-    if (submitted) return
-    setCurrentStep(0)
-    setQualData({})
-    setDialogOpen(true)
-  }
-
-  const canProceed = () => {
-    return (qualData[currentStepData.id] || '').trim() !== ''
-  }
-
-  const handleNext = () => {
-    if (!canProceed()) return
-    if (currentStep < totalSteps - 1) {
-      setCurrentStep(currentStep + 1)
-    } else {
-      // Final step — run qualification logic
-      setSubmitted(true)
-      setDialogOpen(false)
-      if (isQualified(qualData)) {
-        router.push('/book')
-      } else {
-        router.push('/thank-you')
-      }
-    }
-  }
-
-  const handleBack = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1)
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.nativeEvent.isComposing && e.nativeEvent.keyCode !== 229 && currentStepData.type === 'short') {
-      e.preventDefault()
-      handleNext()
-    }
-  }
-
   return (
     <div className="min-h-screen bg-white text-slate-800 selection:bg-blue-100 selection:text-blue-900 pb-28">
       {/* ─── HERO ─── */}
@@ -221,7 +76,7 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-12 sm:mb-14">
             <Button
-              onClick={handleOpenDialog}
+              onClick={handleApply}
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 h-10 text-sm rounded-xl transition-all duration-200 hover:scale-[1.02] min-w-[180px] shadow-lg shadow-blue-600/20"
             >
               Apply for a Strategy Call
@@ -398,29 +253,21 @@ export default function Home() {
             Apply for a strategy call to see if this is right for your practice.
           </p>
 
-          {!submitted ? (
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-xl shadow-slate-100/50">
-              <div className="text-center mb-6">
-                <span className="text-4xl sm:text-5xl block mb-3">👨‍⚕️</span>
-                <p className="text-sm text-slate-400">Tap the button below to get started</p>
-              </div>
-              <Button
-                onClick={handleOpenDialog}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 hover:scale-[1.01] shadow-lg shadow-blue-600/20"
-              >
-                Apply for a Strategy Call
-              </Button>
-              <p className="text-xs text-slate-300 text-center mt-3">
-                Limited availability. We only work with a select number of doctors each month.
-              </p>
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-xl shadow-slate-100/50">
+            <div className="text-center mb-6">
+              <span className="text-4xl sm:text-5xl block mb-3">👨‍⚕️</span>
+              <p className="text-sm text-slate-400">Tap the button below to get started</p>
             </div>
-          ) : (
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 sm:p-8 text-center">
-              <span className="text-4xl sm:text-5xl block mb-3">✅</span>
-              <h3 className="text-lg sm:text-xl font-semibold text-slate-800 mb-2">Application Received</h3>
-              <p className="text-sm text-slate-400">Redirecting you now...</p>
-            </div>
-          )}
+            <Button
+              onClick={handleApply}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 hover:scale-[1.01] shadow-lg shadow-blue-600/20"
+            >
+              Apply for a Strategy Call
+            </Button>
+            <p className="text-xs text-slate-300 text-center mt-3">
+              Limited availability. We only work with a select number of doctors each month.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -437,106 +284,14 @@ export default function Home() {
       >
         <div className="max-w-md mx-auto">
           <Button
-            onClick={handleOpenDialog}
-            disabled={submitted}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-600/30"
+            onClick={handleApply}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-600/30"
           >
-            {submitted ? 'Application Sent' : 'Apply for a Strategy Call'}
+            Apply for a Strategy Call
           </Button>
         </div>
       </div>
 
-      {/* ─── QUALIFICATION DIALOG ─── */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-white border-slate-100 rounded-2xl p-5 sm:p-8 max-h-[90vh] overflow-y-auto">
-          <DialogHeader className="mb-2">
-            <DialogTitle className="text-lg sm:text-2xl font-bold text-slate-900 text-center">
-              Apply for a Strategy Call
-            </DialogTitle>
-            <DialogDescription className="text-center text-slate-400 text-sm">
-              {remainingCount > 0
-                ? `${remainingCount} question${remainingCount !== 1 ? 's' : ''} remaining`
-                : 'All done! Submit your application.'}
-            </DialogDescription>
-          </DialogHeader>
-
-          {/* Progress bar */}
-          <div className="w-full bg-slate-100 rounded-full h-1.5 sm:h-2 overflow-hidden mb-4">
-            <div
-              className="bg-blue-600 h-full rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${(answeredCount / totalSteps) * 100}%` }}
-            />
-          </div>
-
-          <p className="text-xs text-slate-300 text-center mb-5">
-            {currentStep + 1} of {totalSteps}
-          </p>
-
-          {/* Step content */}
-          <div className="mb-6">
-            <label className="block text-sm sm:text-base font-medium text-slate-700 mb-1">
-              {currentStepData.label}
-            </label>
-            {currentStepData.sublabel && (
-              <p className="text-xs text-slate-300 mb-3">{currentStepData.sublabel}</p>
-            )}
-
-            {/* Short answer */}
-            {currentStepData.type === 'short' && (
-              <Textarea
-                placeholder={currentStepData.placeholder}
-                value={qualData[currentStepData.id] || ''}
-                onChange={(e) => setQualData({ ...qualData, [currentStepData.id]: e.target.value })}
-                onKeyDown={handleKeyDown}
-                className="min-h-[80px] sm:min-h-[100px] border-slate-200 focus:border-blue-400 focus:ring-blue-100 rounded-xl text-sm sm:text-base resize-none"
-              />
-            )}
-
-            {/* Radio options */}
-            {currentStepData.type === 'radio' && currentStepData.options && (
-              <RadioGroup
-                value={qualData[currentStepData.id] || ''}
-                onValueChange={(val) => setQualData({ ...qualData, [currentStepData.id]: val })}
-                className="flex flex-col gap-2.5 sm:gap-3"
-              >
-                {currentStepData.options.map((opt) => (
-                  <label
-                    key={opt.value}
-                    className={`flex items-start gap-3 p-3 sm:p-4 rounded-xl border cursor-pointer transition-all duration-200 ${
-                      qualData[currentStepData.id] === opt.value
-                        ? 'border-blue-300 bg-blue-50/60'
-                        : 'border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50/50'
-                    }`}
-                  >
-                    <RadioGroupItem value={opt.value} id={`${currentStepData.id}-${opt.value}`} className="mt-0.5" />
-                    <span className="text-sm sm:text-base text-slate-600 leading-snug">{opt.label}</span>
-                  </label>
-                ))}
-              </RadioGroup>
-            )}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex gap-3">
-            {currentStep > 0 && (
-              <Button
-                variant="outline"
-                onClick={handleBack}
-                className="flex-1 border-slate-200 text-slate-500 hover:bg-slate-50 rounded-xl h-10"
-              >
-                Back
-              </Button>
-            )}
-            <Button
-              onClick={handleNext}
-              disabled={!canProceed()}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold rounded-xl h-10 transition-all duration-200"
-            >
-              {currentStep === totalSteps - 1 ? 'Submit Application' : 'Next'}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
