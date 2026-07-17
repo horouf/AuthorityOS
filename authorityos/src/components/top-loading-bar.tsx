@@ -39,11 +39,18 @@ export function TopLoadingBar() {
     }, 400)
   }
 
+  // Fire the bar immediately when a navigation is intentionally triggered
+  useEffect(() => {
+    const onStart = () => startLoading()
+    window.addEventListener('loading-bar:start', onStart)
+    return () => window.removeEventListener('loading-bar:start', onStart)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname
-      startLoading()
-      // Give React a tick to mount the new page, then finish
+      // Pathname changed — finish whatever bar is running
       const done = setTimeout(finishLoading, 300)
       return () => clearTimeout(done)
     }
