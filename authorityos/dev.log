@@ -1,14 +1,9 @@
 ▲ Next.js 16.2.10 (Turbopack)
 - Local:         http://localhost:3000
-- Network:       http://100.64.0.109:3000
+- Network:       http://100.64.10.204:3000
 - Environments: .env.development.local
-✓ Ready in 430ms
-Attention: Next.js now collects completely anonymous telemetry regarding usage.
-This information is used to shape Next.js' roadmap and prioritize features.
-You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-https://nextjs.org/telemetry
-
-(node:434) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///vercel/share/v0-project/authorityos/next.config.ts is not specified and it doesn't parse as CommonJS.
+✓ Ready in 1062ms
+(node:381) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///vercel/share/v0-project/authorityos/next.config.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /vercel/share/v0-project/authorityos/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
@@ -16,40 +11,20 @@ To eliminate this warning, add "type": "module" to /vercel/share/v0-project/auth
   · serverActions
   ✓ transitionIndicator
 
- GET / 200 in 3.3s (next.js: 3.0s, application-code: 277ms)
- GET /book 200 in 506ms (next.js: 469ms, application-code: 37ms)
-✓ Compiled in 114ms
- GET / 200 in 92ms (next.js: 40ms, application-code: 52ms)
- GET / 200 in 22ms (next.js: 3ms, application-code: 19ms)
- GET / 200 in 23ms (next.js: 3ms, application-code: 20ms)
-✓ Compiled in 88ms
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
-⨯ ReferenceError: handleOpenDialog is not defined
-    at Home (src/app/page.tsx:79:24)
-  77 |           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-ce...
-  78 |             <Button
-> 79 |               onClick={handleOpenDialog}
-     |                        ^
-  80 |               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 h-10 ...
-  81 |             >
-  82 |               Apply for a Strategy Call {
-  digest: '68619497'
-}
- GET / 500 in 121ms (next.js: 4ms, application-code: 117ms)
-✓ Compiled in 55ms
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
-⨯ ReferenceError: handleOpenDialog is not defined
-    at Home (src/app/page.tsx:287:22)
-  285 |         <div className="max-w-md mx-auto">
-  286 |           <Button
-> 287 |             onClick={handleOpenDialog}
-      |                      ^
-  288 |             disabled={submitted}
-  289 |             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disable...
-  290 |           > {
-  digest: '68619497'
-}
- GET / 500 in 75ms (next.js: 6ms, application-code: 69ms)
-✓ Compiled in 41ms
-⚠ Fast Refresh had to perform a full reload due to a runtime error.
- GET / 200 in 66ms (next.js: 6ms, application-code: 60ms)
+ GET / 200 in 363ms (next.js: 152ms, application-code: 211ms)
+ GET /book 200 in 35ms (next.js: 13ms, application-code: 22ms)
+ GET / 200 in 43ms (next.js: 3ms, application-code: 40ms)
+ GET /book 200 in 17ms (next.js: 2ms, application-code: 15ms)
+ GET / 200 in 43ms (next.js: 3ms, application-code: 40ms)
+[browser] Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+ GET /book 200 in 29ms (next.js: 3ms, application-code: 26ms)
+[browser] Image with src "https://vm-appointment-booking-funnel-u.vusercontent.net/website-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET / 200 in 53ms (next.js: 7ms, application-code: 46ms)
+ GET /book 200 in 19ms (next.js: 3ms, application-code: 17ms)
+ GET / 200 in 41ms (next.js: 2ms, application-code: 39ms)
+ GET /book 200 in 33ms (next.js: 6ms, application-code: 26ms)
+✓ Compiled in 443ms
+✓ Compiled in 58ms
+✓ Compiled in 40ms
+✓ Compiled in 33ms
+✓ Compiled in 32ms

@@ -13,6 +13,7 @@ export default function Home() {
   const videoRef = useRef<HTMLDivElement>(null)
 
   const handleApply = () => {
+    window.dispatchEvent(new Event('loading-bar:start'))
     router.push('/book')
   }
 
@@ -79,7 +80,7 @@ export default function Home() {
               onClick={handleApply}
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 h-10 text-sm rounded-xl transition-all duration-200 hover:scale-[1.02] min-w-[180px] shadow-lg shadow-blue-600/20"
             >
-              Apply for a Strategy Call
+              Apply to Work With Us
             </Button>
             <Button
               onClick={handleWatchDemo}
@@ -262,7 +263,7 @@ export default function Home() {
               onClick={handleApply}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 hover:scale-[1.01] shadow-lg shadow-blue-600/20"
             >
-              Apply for a Strategy Call
+              Apply to Work With Us
             </Button>
             <p className="text-xs text-slate-300 text-center mt-3">
               Limited availability. We only work with a select number of doctors each month.
@@ -285,9 +286,9 @@ export default function Home() {
         <div className="max-w-md mx-auto">
           <Button
             onClick={handleApply}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-600/30"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10 text-sm rounded-xl transition-all duration-200 shadow-xl shadow-blue-600/25 hover:shadow-2xl hover:shadow-blue-600/30"
           >
-            Apply for a Strategy Call
+            Apply to Work With Us
           </Button>
         </div>
       </div>

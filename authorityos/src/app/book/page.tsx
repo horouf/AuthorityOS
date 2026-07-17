@@ -20,15 +20,11 @@ export default function BookPage() {
               priority
             />
           </div>
-          <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-medium px-3 py-1.5 rounded-full mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            You&apos;re qualified — a spot is reserved for you
-          </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight text-slate-900 mb-3">
-            Book Your Free Strategy Call
+            Book Your Free Authority Growth Consultation
           </h1>
-          <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
-            Pick a time that works for you. Our team will review your answers and prepare a tailored reputation strategy for your practice.
+          <p className="text-sm sm:text-base text-slate-500 max-w-lg mx-auto leading-relaxed">
+            This 30-minute consultation is designed to evaluate your practice, discuss your growth goals, and determine whether AuthorityOS is the right solution for you. Please book a time you&apos;re confident you can attend, as we accept a limited number of new clients each month.
           </p>
         </div>
       </header>
