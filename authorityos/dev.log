@@ -21,3 +21,5 @@ To eliminate this warning, add "type": "module" to /vercel/share/v0-project/auth
   Reload env: .env.development.local
  GET / 200 in 92ms (next.js: 35ms, application-code: 57ms)
  GET / 200 in 102ms (next.js: 3ms, application-code: 99ms)
+ GET / 200 in 48ms (next.js: 3ms, application-code: 44ms)
+✓ Compiled in 78ms
