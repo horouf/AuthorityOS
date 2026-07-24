@@ -94,32 +94,31 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* 16:9 outer container — crops the 9:16 source so the full timeline is always visible */}
+          {/* 16:9 outer box — vertical video is pillarboxed (black sidebars) so Vimeo renders at
+               its true 9:16 ratio with a full-width timeline and working fullscreen button */}
           <div
             ref={videoRef}
-            className="relative max-w-lg mx-auto group cursor-pointer hover:border-blue-400/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-200/40 rounded-2xl transition-all duration-300 overflow-hidden border border-transparent"
+            className="relative max-w-lg mx-auto rounded-2xl overflow-hidden bg-black"
+            style={{ aspectRatio: '16 / 9' }}
           >
-            {/* 16:9 aspect-ratio box */}
-            <div className="bg-black rounded-2xl" style={{ position: 'relative', paddingTop: '56.25%', overflow: 'hidden' }}>
-              {/* Scale the 9:16 iframe to fill 16:9 width; height = width × (16/9) × (9/16) × (16/9) = width × (16/9) */}
-              <iframe
-                src="https://player.vimeo.com/video/1209497825?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                title="Social Media Authority Strategy - Authority OS"
-                style={{
-                  position: 'absolute',
-                  /* The source is 9:16. To fill a 16:9 box by width we need the iframe
-                     to be (16/9) / (9/16) = 256/81 ≈ 316.05% wide, then nudge left to centre. */
-                  top: '0',
-                  left: '50%',
-                  width: '316.05%',
-                  height: '100%',
-                  transform: 'translateX(-50%)',
-                }}
-              />
-            </div>
+            {/* iframe is sized to the full height of the 16:9 box; width follows 9:16 naturally */}
+            <iframe
+              src="https://player.vimeo.com/video/1209497825?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Social Media Authority Strategy - Authority OS"
+              style={{
+                position: 'absolute',
+                top: 0,
+                /* width = height × (9/16); height is 100% of the 16:9 container.
+                   Expressed as a percentage of the container width: (9/16) / (9/16 * 16/9) = 56.25% */
+                left: '50%',
+                transform: 'translateX(-50%)',
+                height: '100%',
+                width: '56.25%',
+              }}
+            />
           </div>
         </div>
       </section>
