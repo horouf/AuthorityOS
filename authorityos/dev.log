@@ -18,3 +18,6 @@ To eliminate this warning, add "type": "module" to /vercel/share/v0-project/auth
 
  GET / 200 in 2.6s (next.js: 2.4s, application-code: 246ms)
 ✓ Compiled in 63ms
+  Reload env: .env.development.local
+ GET / 200 in 92ms (next.js: 35ms, application-code: 57ms)
+ GET / 200 in 102ms (next.js: 3ms, application-code: 99ms)
