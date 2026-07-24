@@ -97,11 +97,14 @@ export default function Home() {
           <div ref={videoRef} className="relative max-w-lg mx-auto group cursor-pointer hover:border-blue-400/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-200/40 rounded-2xl transition-all duration-300 overflow-hidden border border-transparent">
             <div className="bg-black rounded-2xl" style={{ padding: '56.25% 0 0 0', position: 'relative' }}>
               <iframe
-                src="https://player.vimeo.com/video/1209497825?badge=0&autopause=0&player_id=0&app_id=58479"
+                src="https://player.vimeo.com/video/1209497825?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                width="1920"
+                height="1080"
+                frameBorder="0"
                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                title="Social media Authority OS -"
+                title="Social Media Authority Strategy - Authority OS"
                 className="rounded-2xl"
               />
             </div>
